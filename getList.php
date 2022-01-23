@@ -9,12 +9,7 @@ $_SESSION = array();
 //$res = $res->fetch_array(MYSQLI_BOTH);
 //$res = $res->fetch_all(MYSQLI_ASSOC);
 //var_dump($res);
-$pattern_page = '/^\d+$/';
-if(!preg_match($pattern_page,$_GET['page']))
-{
-	header("Location: http://localhost:8000");
-	exit();
-}
+
 
 if(isset($_GET['page'])){
 	$page = $_GET['page'];
@@ -23,7 +18,13 @@ else{
 	$page = 1;
 }
 
-$postCount = 5;
+$pattern_page = '/^\d+$/';
+if(!preg_match($pattern_page,$_GET['page']))
+{
+	$page = 1;
+}
+
+$postCount = 10;
 $from = ($page - 1) * $postCount;
 
 $sql = "SELECT COUNT(*) as count FROM `filmlist`";
@@ -32,7 +33,10 @@ $count = mysqli_fetch_assoc($resCount)['count'];
 $pagesCount = ceil($count/$postCount);
 
 if($page > $pagesCount)
+{
 	$from = $count - $count % $postCount;
+	$page = $pagesCount;
+}
 
 
 $film = new Film();
