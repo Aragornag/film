@@ -1,11 +1,29 @@
 <?php
 require_once('film.php');
+session_start();
+$_SESSION = array();
 
-$film = new Film();
+$search = clear_data($_GET['search']);
+$pattern_Title = '/^.*[a-z]|[A-Z]|[0-9].*$/';
 
-$res = $film->searchTitle($_GET['search']);
+$_SESSION['flag'] = 0;
+if(!preg_match($pattern_Title,$search))
+{
+	$_SESSION['search']['error']['Title'] = '<small class="text-danger">начинатся должно с буквы или цифры</small>';
+	$_SESSION['flag'] = 1;
+	header("Location: http://localhost:8000");
+	exit(); 
+}
+if($_SESSION['flag'] == 0)
+{
+	$film = new Film();
 
-$res = $res->fetch_all(MYSQLI_ASSOC);
+	$res = $film->searchTitle($search);
+
+	$res = $res->fetch_all(MYSQLI_ASSOC);
+}
+
+
 //var_dump($res);
 
 ?>

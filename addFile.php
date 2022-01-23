@@ -1,7 +1,8 @@
 <?php
 
 require_once('film.php');
-
+session_start();
+$_SESSION = array();
 //if ($_FILES && $_FILES["filename"]["error"]== UPLOAD_ERR_OK)
 //{
     //$name = $_FILES["filename"]["name"];
@@ -39,5 +40,6 @@ $line = 0;
 		
 		//echo $lines[$line] . '<br>';
 	}
+$_SESSION['addFile']['error']['flag'] = 0;	
 header("Location: http://localhost:8000");
 exit();

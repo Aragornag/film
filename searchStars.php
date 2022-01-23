@@ -1,11 +1,31 @@
 <?php
 require_once('film.php');
+session_start();
+$_SESSION = array();
 
-$film = new Film();
 
-$res = $film->searchStars($_GET['search']);
+$search = clear_data($_GET['search']);
+$pattern_Stars = '/^.*[a-z]|[A-Z].*$/';
 
-$res = $res->fetch_all(MYSQLI_ASSOC);
+$_SESSION['flag'] = 0;
+if(!preg_match($pattern_Stars,$search))
+{
+	$_SESSION['searchStars']['error']['Stars'] = '<small class="text-danger">начинатся должно с буквы</small>';
+	$_SESSION['flag'] = 1;
+	header("Location: http://localhost:8000");
+	exit(); 
+}
+if($_SESSION['flag'] == 0)
+{
+	$film = new Film();
+
+	$res = $film->searchStars($_GET['search']);
+
+	$res = $res->fetch_all(MYSQLI_ASSOC);
+}
+
+
+
 //var_dump($res);
 
 ?>

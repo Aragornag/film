@@ -1,11 +1,28 @@
 <?php
 require_once('film.php');
+session_start();
+$_SESSION = array();
+$id = clear_data($_GET['ID']);
 
-$film = new Film();
 
-$res = $film->getInfo($_GET['ID']);
-$res = $res->fetch_array(MYSQLI_ASSOC);
+$pattern_ID = '/^\d+$/';
 
+$_SESSION['flag'] = 0;
+if(!preg_match($pattern_ID,$id))
+{
+	$_SESSION['getInfo']['error']['ID'] = '<small class="text-danger">введите число</small>';
+	$_SESSION['flag'] = 1;
+	header("Location: http://localhost:8000");
+	exit();
+}
+
+if($_SESSION['flag'] == 0)
+{
+	$film = new Film();
+
+	$res = $film->getInfo($id);
+	$res = $res->fetch_array(MYSQLI_ASSOC);
+}
 
 ?>
 
@@ -24,14 +41,18 @@ $res = $res->fetch_array(MYSQLI_ASSOC);
     <body>
         <div class="container">
             <?php if (isset($res)):?>
+			<p>ID: <b><?php echo $res['id']; ?></b></p>
             <p>Title: <b><?php echo $res['Title']; ?></b></p>
             <p>Release Year: <b><?php echo $res['Release Year']; ?></b></p>
             <p>Format: <b><?php echo $res['Format']; ?></b></p>
             <p>Stars: <b><?php echo $res['Stars']; ?></b></p>
-            <?php else:?>
-            <p>Такого ID нету</p>
-            <?php endif; ?>
-
+            <?php 
+			else:{
+				$_SESSION['getInfo']['error']['ID'] = '<small class="text-danger">Фильма с этим ID не найдено</small>';
+				header("Location: http://localhost:8000");
+				exit();
+			}
+			endif;?>
         <div>
     </body>
 </html>

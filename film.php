@@ -23,7 +23,7 @@ class Film{
 	{
         global $mysqli;
 		$sql = "DELETE FROM `filmlist` WHERE `filmlist`.`id` = $id;";
-		$mysqli->query($sql);
+		return $mysqli->query($sql);
 	}
 
     public function getInfo($id)
@@ -32,10 +32,12 @@ class Film{
         $sql = "SELECT * FROM `filmlist` WHERE id = $id;";
         return $mysqli->query($sql);
     }
-    public function getList($sort = 'ASC')
+    public function getList($from,$count, $sort = 'ASC')
     {
         global $mysqli;
-        $sql = "SELECT `id`,`Title` FROM `filmlist` ORDER BY `Title` $sort;";
+		$sql = "SELECT * FROM `filmlist` ORDER BY `Title` $sort LIMIT $from,$count;";
+		
+        //$sql = "SELECT `id`,`Title` FROM `filmlist` ORDER BY `Title` $sort;";
         return $mysqli->query($sql);
     }
 
@@ -52,5 +54,12 @@ class Film{
         return $mysqli->query($sql);
     }
 
+}
+function clear_data($val){
+	$val = trim($val);
+	$val = stripcslashes($val);
+	$val = strip_tags($val);
+	$val = htmlspecialchars($val);
+	return $val;
 }
 
