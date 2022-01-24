@@ -2,7 +2,7 @@
 define("servername", "127.0.0.1");
 define("username", "root");
 define("password", "");
-define("BDname", "film_test");
+define("BDname", "FilmList");
 $mysqli = new mysqli(servername, username, password, BDname);
 
 if ($mysqli -> connect_error) {
