@@ -13,7 +13,20 @@ $_SESSION = array();
 //var_dump($_FILES);
 //echo $_FILES["uploadedFile"]["tmp_name"];
 //exit;
+
+if(pathinfo($_FILES["uploadedFile"]["name"],PATHINFO_EXTENSION) != 'txt'){
+	$_SESSION['addFile']['error']['type'] = '<b class="text-danger">Неверный тип файла</b>';
+	$_SESSION['addFile']['error']['flag'] = '<b class="text-danger">Отправка не удалась</b>';
+	header("Location: http://localhost:8000");
+	exit();
+}
+
+$start_count = $mysqli->query('SELECT COUNT(*) as count FROM `filmlist`;');
+$start_count = mysqli_fetch_array($start_count);
+$start_count = $start_count['count'];
+
 $lines = file($_FILES["uploadedFile"]["tmp_name"]);
+
 $line = 0;
 //while($line < count($lines))
 	$film = new Film();
@@ -40,6 +53,10 @@ $line = 0;
 		
 		//echo $lines[$line] . '<br>';
 	}
-$_SESSION['addFile']['error']['flag'] = 0;	
+$_SESSION['addFile']['error']['flag'] = '<b class="text-success">Отправка успешна</b>';	
+$finish_count = $mysqli->query('SELECT COUNT(*) as count FROM `filmlist`;');
+$finish_count = mysqli_fetch_array($finish_count);
+$finish_count = $finish_count['count'];
+$_SESSION['addFile']['result']['count'] = $finish_count - $start_count;
 header("Location: http://localhost:8000");
 exit();

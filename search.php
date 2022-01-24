@@ -53,7 +53,7 @@ if($_SESSION['flag'] == 0)
         <?php else:?>
             <p>Результат поиска пуст</p>
         <?php endif; ?>
-
+		<a href="http://localhost:8000"><button type="button" class="btn btn-primary">На главную</button></a>
     <div>
 </body>
 </html>

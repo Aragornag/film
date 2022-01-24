@@ -53,6 +53,7 @@ if($_SESSION['flag'] == 0)
 				exit();
 			}
 			endif;?>
+			<a href="http://localhost:8000"><button type="button" class="btn btn-primary">На главную</button></a>
         <div>
     </body>
 </html>

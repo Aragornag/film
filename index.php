@@ -14,7 +14,11 @@
     <div class="container">
         <h1>Загрузить файл</h1>
 		
-		<?php if(isset($_SESSION['addFile']['error']['flag']) and ($_SESSION['addFile']['error']['flag'] == 0)) echo '<b class="text-success">Отправка успешна</b>'; ?>
+		<?php if(isset($_SESSION['addFile']['error']['flag'])) echo $_SESSION['addFile']['error']['flag'];
+			echo '<br>';
+			if(isset($_SESSION['addFile']['error']['type'])) echo $_SESSION['addFile']['error']['type'];
+			if(isset($_SESSION['addFile']['result']['count'])) echo '<b>Добавлено '.$_SESSION['addFile']['result']['count']. ' фильмов</b>';
+		?>
         <form method="POST" action="addFile.php" enctype="multipart/form-data">
             <div>
                 <span>Upload a File:</span>
@@ -63,7 +67,7 @@
                     <form action="DeleteFilm.php" method="post" onSubmit='return confirm("Вы уверены что хотите удалить фильм?");'>
                         ID:
                         <br>
-                        <input type="number" name="ID" value="" class="form-control">
+                        <input type="number" min="1" name="ID" value="" class="form-control">
 						<?php if(isset($_SESSION['deleteFilm']['error']['ID'])) echo $_SESSION['deleteFilm']['error']['ID'];?>
                         <br>
                         <input type="submit" value="Submit" class="btn btn-primary" >
@@ -76,7 +80,7 @@
                         ID:
                         <br>
 						<?php if(isset($_SESSION['getInfo']['error']['ID'])) echo $_SESSION['getInfo']['error']['ID'];?>
-                        <input type="number" name="ID" value="" class="form-control">
+                        <input type="number" min="1" name="ID" value="" class="form-control">
                         <br>
                         <input type="submit" value="Submit" class="btn btn-primary">
                     </form>
@@ -101,12 +105,13 @@
 
                 <h1>Найти фильм по имени Актера</h1>
 				
-				<?php if(isset($_SESSION['searchStars']['error']['Stars'])) echo $_SESSION['searchStars']['error']['Stars'];?>
+				
                 <div class="form-group col-4">
                     <form action="searchStars.php" method="get">
                         Ваш запрос поиска:
                         <br>
                         <input type="text" name="search" value="" class="form-control">
+						<?php if(isset($_SESSION['searchStars']['error']['Stars'])) echo $_SESSION['searchStars']['error']['Stars'];?>
                         <br>
                         <input type="submit" value="Submit" class="btn btn-primary">
                     </form>

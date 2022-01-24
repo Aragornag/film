@@ -19,7 +19,7 @@ else{
 }
 
 $pattern_page = '/^\d+$/';
-if(!preg_match($pattern_page,$_GET['page']))
+if(!preg_match($pattern_page,$page))
 {
 	$page = 1;
 }
@@ -68,6 +68,9 @@ $res = $res->fetch_all(MYSQLI_ASSOC);
     }
     ?>
 	</div>
+	<?php
+	if(!empty($res)):
+	?>
 		<nav>
 		  <ul class="pagination">
 		  <?php
@@ -83,7 +86,7 @@ $res = $res->fetch_all(MYSQLI_ASSOC);
 			
 			?>
 			<li class="page-item"><a class="page-link" href="<?php echo "/getList.php?page=$prev";?>">Previous</a></li>
-			<li class="page-item"><a class="page-link" href="<?php echo "/getList.php?page=1";?>"><?php echo 1;?></a></li>
+			<li class="page-item"><a class="<?php if($page == 1)echo 'bg-secondary ';?>page-link" href="<?php echo "/getList.php?page=1";?>"><?php echo 1;?></a></li>
 			
 			
 			<?php
@@ -98,7 +101,7 @@ $res = $res->fetch_all(MYSQLI_ASSOC);
 				}
 			?>
 			<?php if(($page != 1)&&($page != $pagesCount)):?>
-			<li class="page-item"><a class="page-link" href="<?php echo "/getList.php?page=$page";?>"><?php echo $page;?></a></li>
+			<li class="page-item"><a class="page-link bg-secondary" href="<?php echo "/getList.php?page=$page";?>"><?php echo $page;?></a></li>
 			<?php endif;?>
 			
 			<?php
@@ -115,10 +118,18 @@ $res = $res->fetch_all(MYSQLI_ASSOC);
 			?>
 			
 			
-			<li class="page-item"><a class="page-link" href="<?php echo "/getList.php?page=$pagesCount";?>"><?php echo $pagesCount;?></a></li>
+			<li class="page-item"><a class="<?php if($page == $pagesCount)echo 'bg-secondary ';?>page-link" href="<?php echo "/getList.php?page=$pagesCount";?>"><?php echo $pagesCount;?></a></li>
 			<li class="page-item"><a class="page-link" href="<?php echo "/getList.php?page=$next";?>">Next</a></li>
 		  </ul>
 		</nav>
+		<?php
+	else:{
+		echo 'Список фильмов пуст';
+	}
+	endif;
+	?>
+		<br>
+		<a href="http://localhost:8000"><button type="button" class="btn btn-primary">На главную</button></a>
     <div>
 </body>
 </html>
